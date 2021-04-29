@@ -1,0 +1,16 @@
+{
+    "copyright": "Copyright (c) {year} Wind River Systems, Inc.",
+    "regex": "Copyright \\(c\\) [0-9]+ Wind River Systems, Inc\\.",
+    "extensions": {
+        "html": {
+            "startComment": "<!--",
+            "endComment": "-->"
+        },
+        "css": {
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        }
+    }
+}

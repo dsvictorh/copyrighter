@@ -1,0 +1,47 @@
+{
+    "copyright": "Copyright (c) {year} Wind River Systems, Inc.\n\nThe right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.",
+    "regex": "Copyright \\(c\\) [0-9]+ Wind River Systems, Inc\\.\\n\\nThe right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement\\.",
+    "defaultExcludedFolders": ["node_modules", "dist", ".git", "dist-tests"],
+    "extensions": {
+        "html": {
+            "startComment": "<!--",
+            "endComment": "-->"
+        },
+        "css": {
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        },
+        "scss": {
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        },
+        "js": {
+            "prefixText": "#!/usr/bin/env node",
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        },
+        "ts": {
+            "prefixText": "#!/usr/bin/env node",
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        },
+        "dockerfile": {
+            "comment": "#"
+        },
+        "sh": {
+            "prefixText": "#!/bin/bash",
+            "comment": "#"
+        },
+        "gitignore": {
+            "comment": "#"
+        }
+    }
+}
