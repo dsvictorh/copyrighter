@@ -26,7 +26,7 @@ const args = yargs
         .option('config', {
             alias: 'c',
             type: 'string',
-            description: `Extra configuration JSON file to modify or replace copyrighter configurations. 
+            description: `Extra configuration JSON file to modify or replace Copyrighter's configurations. 
             If any of the top level properties are omitted the default configuration will fill it in.
 
                 [copyright]: string = Copyright text to embed. Use {year} where you want the year to be added.

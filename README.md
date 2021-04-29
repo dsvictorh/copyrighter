@@ -1,4 +1,10 @@
 # USP Copyrighter
+- [Installation & Configuration](#installation-configuration-its-super-complicated-only-smarts-peoples)
+- [Commands](#commands)
+- [Using Arguments](#using-arguments)
+- [Argument List](#argument-list)
+- [Test Specific Files](#test-specific-files)
+- [New Version Process](#new-version-process)
 
 ### Installation & Configuration (It's Super Complicated. Only Smarts Peoples)
 ```console
@@ -21,7 +27,7 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * **--help -h**: Show help.
 * **--version -v**: Show version number.
 * **--answer -a**: Set the automatic answer value for user prompts (Y/n). This can be used for build pipelines to automatically answer confirmation prompts that would block the job. Non valid answer values will cancel the entire operation.
-* **--config -c**: Extra configuration JSON file to modify or replace copyrighter configurations. If any of the top level properties are omitted the default configuration will fill it in.
+* **--config -c**: Extra configuration JSON file to modify or replace Copyrighter's configurations. If any of the top level properties are omitted the default configuration will fill it in.
 * **--encoding -e**: Encoding to read and write files with.
 * **--exclude-directories -x**: Directories to be excluded from the process.
 * **--folder -f**: Root folder from where to start the process.
@@ -38,3 +44,6 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * Change *index.ts* version number on yargs configuration.
 * Delete *package-lock.json* file and *npm install* to generate a new lock.
 * Merge to master and create new version tag with release notes on git repository.
+* Build project and commit contents to [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool) master branch.
+* Replace Default Configuration with latest contents of *copyrighter.json* on README file on [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool).
+* Create new version tag with release notes on [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool).
