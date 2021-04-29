@@ -1,6 +1,6 @@
 {
-    "copyright": "Copyright (c) {year} Wind River Systems, Inc.",
-    "regex": "Copyright \\(c\\) [0-9]+ Wind River Systems, Inc\\.",
+    "copyright": "Copyright (c) {year} Corporation, Inc.",
+    "regex": "Copyright \\(c\\) [0-9]+ Corporation, Inc\\.",
     "extensions": {
         "html": {
             "startComment": "<!--",
