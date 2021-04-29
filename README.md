@@ -44,6 +44,6 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * Change *index.ts* version number on yargs configuration.
 * Delete *package-lock.json* file and *npm install* to generate a new lock.
 * Merge to master and create new version tag with release notes on git repository.
-* Build project and commit contents to [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool) master branch.
-* Replace Default Configuration with latest contents of *copyrighter.json* on README file on [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool).
-* Create new version tag with release notes on [deployment repo](https://gitlab.devstar.cloud/wrai/usp/usp-copyrighter-tool).
+* Build project and commit contents to deployment repo master branch.
+* Replace Default Configuration with latest contents of *copyrighter.json* on README file on deployment repo.
+* Create new version tag with release notes on deployment repo.
