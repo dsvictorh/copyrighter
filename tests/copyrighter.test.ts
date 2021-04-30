@@ -146,3 +146,17 @@ describe('Test Override Config Works', () => {
         expect(files[3].data).toEqual(cssOverrideConverted);
     });
 });
+
+describe('Test Copyrighter Scan Works', () => {
+    test('Scans All Files', async () => {
+        const files = await program.run({ folder: './', fileTypes: [], excludedFolders: ['node_modules', 'dist'], scan: true, config: new Config(config)});
+        
+        expect(files.length).toEqual(6);
+    });
+
+    test('Scans HTML, CSS Ignores JS', async () => {
+        const files = await program.run({ folder: './', fileTypes: ['html', 'css', 'js'], excludedFolders: ['node_modules', 'dist'], config: new Config(Object.assign(JSON.parse(JSON.stringify(config)), overrideConfig))});
+        
+        expect(files.length).toEqual(4);
+    });
+});

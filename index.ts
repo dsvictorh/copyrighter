@@ -77,13 +77,18 @@ const args = yargs
             description: 'File types that you want to copyright.',
             demandOption: false
         })
-        
         .option('remove', {
             alias: 'r',
             type: 'boolean',
             description: 'Remove the copyright text instead of adding/replacing it.',
             demandOption: false
-        })       
+        })   
+        .option('scan', {
+            alias: 's',
+            type: 'boolean',
+            description: 'Run the tool in scan mode.',
+            demandOption: false
+        })           
         .option('tommy', {
             type: 'boolean',
             description: 'What does this do Mr Tommy??',
@@ -98,6 +103,7 @@ const args = yargs
         .array('exclude-directories')
         .default('exclude-directories', [], 'Default configuration excluded folders')
         .boolean('remove')
+        .boolean('scan')
         .boolean('tommy')
         .wrap(150)
         .argv;
@@ -123,6 +129,7 @@ config.copyright = config.copyright.replace('{year}', new Date().getFullYear().t
             excludedFolders: args['exclude-directories'],
             config: new Config(config),
             remove: args['remove'],
+            scan: args['scan'],
             tommy: args['tommy']
         });
         

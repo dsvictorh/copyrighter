@@ -45,5 +45,6 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * Delete *package-lock.json* file and *npm install* to generate a new lock.
 * Merge to master and create new version tag with release notes on git repository.
 * Build project and commit contents to deployment repo master branch.
+* Replace version number on installation section on README file on deployment repo.
 * Replace Default Configuration with latest contents of *copyrighter.json* on README file on deployment repo.
 * Create new version tag with release notes on deployment repo.

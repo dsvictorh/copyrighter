@@ -42,6 +42,13 @@
         },
         "gitignore": {
             "comment": "#"
+        },
+        "py": {
+            "comment": "#"
+        },
+        "xml": {
+            "startComment": "<!--",
+            "endComment": "-->"
         }
     }
 }

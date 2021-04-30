@@ -45,6 +45,45 @@ export class Program{
                 Mr. Tommy will live on!!!!!! The skates are still cool!`);
         }
 
+        if(args.scan){
+            return this.scan(args);
+        }else{
+           return this.copyright(args);
+        }
+    }
+
+    private async scan(args: IArgs): Promise<File[]> {
+        const nonCopyrightedFiles: File[] = [];
+        args.excludedFolders = args.excludedFolders.length ? args.excludedFolders : args.config.defaultExcludedFolders;
+
+        if(args.fileTypes.length == 0){
+            for(let extension of args.config.extensions){
+                args.fileTypes.push(extension.name)
+            }
+        }
+
+        const files = await this.filer.getFiles(args.folder, args.fileTypes, args.excludedFolders, args.config.encoding);
+        const copyrighter = new Copyrighter(args.config);
+        for(let file of files){
+            const isCopyrighted = copyrighter.scan(file);
+            if(isCopyrighted == null){
+                console.warn(`WARNING: File ${file.name} was ignored because no configuration for its type could be found.`);       
+            }else if(!isCopyrighted){
+                console.log(`SCAN: File ${file.name} missing copyright text.`);
+                nonCopyrightedFiles.push(file);
+            }  
+        }   
+        
+        if(nonCopyrightedFiles.length){
+            console.info(`FINISHED: ${nonCopyrightedFiles.length} files missing copyright text.`);
+        }else{
+            console.info('FINISHED: No files missing copyright text.');
+        }
+
+        return nonCopyrightedFiles;
+    }
+
+    private async copyright(args: IArgs): Promise<File[]>{
         const copyrightedFiles: File[] = [];
         args.excludedFolders = args.excludedFolders.length ? args.excludedFolders : args.config.defaultExcludedFolders;
         
@@ -71,16 +110,20 @@ export class Program{
                     try{
                         this.filer.replaceFile(file, args.config.encoding);
                         copyrightedFiles.push(file);
-                        console.info(`SUCCESS: File ${file.name} copyrighted`);
+                        console.info(`SUCCESS: File ${file.name} ${args.remove ? 'copyright removed' : 'copyrighted'}`);
                     }catch(error: any){
-                        console.error(`ERROR: File ${file.name} failed to save changes.`)
+                        console.error(`ERROR: File ${file.name} failed to save changes.`);
                     }
                 }else{
                     console.warn(`WARNING: File ${file.name} was ignored because no configuration for its type could be found`);
                 }  
             }   
             
-            console.info('FINISHED: Files Copyrighted.');
+            if(copyrightedFiles.length){
+                console.info(`FINISHED: ${copyrightedFiles.length} files processed.`);
+            }else{
+                console.info('FINISHED: No files processed.');
+            }
         }
 
         return copyrightedFiles;

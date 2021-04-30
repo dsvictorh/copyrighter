@@ -6,5 +6,6 @@ export interface IArgs{
     excludedFolders: string[];
     config: Config;
     remove?: boolean;
+    scan?: boolean;
     tommy?: boolean;
 }
