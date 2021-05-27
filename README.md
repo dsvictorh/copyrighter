@@ -1,4 +1,4 @@
-# USP Copyrighter
+# Copyrighter
 - [Installation & Configuration](#installation-configuration-its-super-complicated-only-smarts-peoples)
 - [Commands](#commands)
 - [Using Arguments](#using-arguments)
