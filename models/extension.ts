@@ -1,6 +1,6 @@
 export class Extension{
     public readonly name: string;
-    public readonly prefixText: string;
+    public readonly prefixTexts: string[];
     public readonly startComment: string;
     public readonly startCommentRegex: string;
     public readonly endComment: string;
@@ -11,7 +11,7 @@ export class Extension{
     constructor(args: any = null){
         args = args ? JSON.parse(JSON.stringify(args)) : {};
         this.name = args.name || null;
-        this.prefixText = args.prefixText || null;
+        this.prefixTexts = args.prefixTexts || [];
         this.startComment = args.startComment || null;
         this.startCommentRegex = args.startCommentRegex || null;
         this.endComment = args.endComment || null;

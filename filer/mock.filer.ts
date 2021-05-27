@@ -3,7 +3,7 @@ import { IFiler } from '../interfaces/ifiler';
 
 
 export const html = `<!--
-Copyright (c) 2019 Wind River Systems, Inc.
+Copyright (c) 2020 Corporation, Inc.
 
 The right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.
 -->
@@ -37,7 +37,7 @@ export const scss = `div{
     }
 }`;
 
-export const dockerfile = `# Copyright (c) 2019 Wind River Systems, Inc.
+export const dockerfile = `# Copyright (c) 2019 Corporation, Inc.
 # 
 # The right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.
 FROM node:14 AS compile-image
@@ -53,7 +53,7 @@ RUN ng build --prod`;
 export const js = `function copyright(){
     alert('We are copyrighting!!');
     /*
-Copyright (c) 2019 Wind River Systems, Inc.
+Copyright (c) 2019 Corporation, Inc.
 
 The right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.
 */
@@ -79,6 +79,24 @@ export class Copyright{
     }
 }`;
 
+export const sh1 = `#!/bin/sh -e
+
+for (( counter=10; counter>0; counter-- ))
+do
+echo -n "$counter "
+done
+printf`;
+
+export const sh2 = `#!/usr/bin/env bash
+
+for (( counter=10; counter>0; counter-- ))
+do
+echo -n "$counter "
+done
+printf`;
+
+export const fail = 'fail';
+
 
 export class MockFiler implements IFiler{
     public readonly files: File[];
@@ -92,7 +110,9 @@ export class MockFiler implements IFiler{
             new File({ name: 'test.scss', path: './test', data: scss}),
             new File({ name: 'Dockerfile', path: './test', data: dockerfile}),
             new File({ name: 'test.js', path: './test', data: js}),
-            new File({ name: 'test.ts', path: './test', data: ts})
+            new File({ name: 'test.ts', path: './test', data: ts}),
+            new File({ name: 'test1.sh', path: './test', data: sh1}),
+            new File({ name: 'test2.sh', path: './test', data: sh2})
         ];
         
         this.innerFiles = [
@@ -101,7 +121,9 @@ export class MockFiler implements IFiler{
             new File({ name: 'inner-test.scss', path: './inner-test', data: scss}),
             new File({ name: 'inner.dockerfile', path: './inner-test', data: dockerfile}),
             new File({ name: 'inner-test.js', path: './inner-test', data: js}),
-            new File({ name: 'inner-test.ts', path: './inner-test', data: ts})
+            new File({ name: 'inner-test.ts', path: './inner-test', data: ts}),
+            new File({ name: 'inner-test1.sh', path: './inner-test', data: sh1}),
+            new File({ name: 'inner-test2.sh', path: './inner-test', data: sh2})
         ];
 
         this.nonoFiles = [
@@ -110,7 +132,9 @@ export class MockFiler implements IFiler{
             new File({ name: 'nono.scss', path: './nono', data: scss}),
             new File({ name: 'nono.dockerfile', path: './nono', data: dockerfile}),
             new File({ name: 'nono.js', path: './nono', data: js}),
-            new File({ name: 'nono.ts', path: './nono', data: ts})
+            new File({ name: 'nono.ts', path: './nono', data: ts}),
+            new File({ name: 'nono1.sh', path: './nono', data: sh1}),
+            new File({ name: 'nono2.sh', path: './nono', data: sh2})
         ];
     }
 
@@ -137,6 +161,13 @@ export class MockFiler implements IFiler{
                 case 'ts':
                     this.addFiles(folder, excludedDirectories, files, 5);
                     break;
+                case 'sh':
+                    this.addFiles(folder, excludedDirectories, files, 6);
+                    this.addFiles(folder, excludedDirectories, files, 7);
+                    break;
+                case 'fail':
+                    files.push(new File({ name: 'fail.html', path: './fail',  data: fail}));
+                    break;
             }
         }
 
@@ -144,6 +175,10 @@ export class MockFiler implements IFiler{
     }
 
     public replaceFile(file: File): void{
+        if(file.data.endsWith('fail')){
+            throw new Error('Cannot save file');
+        }
+
         console.log(`Mock replaceFile: ${file.name}.`);
     }
 

@@ -32,7 +32,11 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * **--exclude-directories -x**: Directories to be excluded from the process.
 * **--folder -f**: Root folder from where to start the process.
 * **--file-types -t**: File types that you want to copyright.
+* **--log-mode -l**: Copyright errors will be logged without causing the tool to finish with an error code.
 * **--remove -r**: Remove the copyright text instead of adding/replacing it.
+* **--scan -s**: Run the tool in scan mode.
+* **--year -y**: Set the year used by the tool. If not specified the tool will take any copyright text regardless of year as valid in scan mode and use the current year for the replacement text in replace mode.
+
 ### Test Specific Files
 * **Tests Folder**: Add all test files there.
 * **Mock Files**: Mock interface implementations for unit testing.
@@ -46,5 +50,6 @@ More information on every argument on *index.ts* or by using the *--help* argume
 * Merge to master and create new version tag with release notes on git repository.
 * Build project and commit contents to deployment repo master branch.
 * Replace version number on installation section on README file on deployment repo.
+* Add or remove help parameters on the argument list section on README file on deployment repo.
 * Replace Default Configuration with latest contents of *copyrighter.json* on README file on deployment repo.
 * Create new version tag with release notes on deployment repo.

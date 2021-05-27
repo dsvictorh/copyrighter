@@ -1,4 +1,4 @@
-import { IConsoleQuestion } from '../interfaces/iconsole';
+import { IConsoleQuestion } from '../interfaces/iconsole-question';
 import * as readline from 'readline';
 
 export class WRConsoleQuestion implements IConsoleQuestion{

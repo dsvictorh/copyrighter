@@ -5,6 +5,8 @@ export interface IArgs{
     fileTypes: string[];
     excludedFolders: string[];
     config: Config;
+    year?: number;
+    logMode?: boolean;
     remove?: boolean;
     scan?: boolean;
     tommy?: boolean;

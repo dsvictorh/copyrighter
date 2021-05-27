@@ -5,14 +5,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { WRConsoleQuestion } from './console-question/wr.console-question';
 import { WRFiler } from './filer/wr.filer';
-import { IConsoleQuestion } from 'interfaces/iconsole';
+import { IConsoleQuestion } from 'interfaces/iconsole-question';
 import { IFiler } from './interfaces/ifiler';
 import { Program } from './program';
 import { Config } from './models/config';
 
 const args = yargs
         .help('help', 'Show help menu.')
-        .version('version', 'Show version number.', '1.0.0') 
+        .version('version', 'Show version number.', '1.2.1') 
         .option('answer', {
             alias: 'a',
             type: 'string',
@@ -32,11 +32,11 @@ const args = yargs
                 [copyright]: string = Copyright text to embed. Use {year} where you want the year to be added.
                 
                 [regex]: string = Regular expression to look for the copyright text. Do not add the end character ($) 
-                or files with any other data will not be picked up. Replace {year} with a specific number or with [0-9]+ 
-                if you want to detect any year so that it is replaced.
+                or files with any other data will not be picked up. Use {year} if you want to replace the copyright text 
+                regardless of any year.
                 
                 [extensions]: object = Supported extensions for copyrighter to write into.
-                [extensions.prefixText] (optional): string = A text that could be present at the start of the file always needs to be there.
+                [extensions.prefixTexts] (optional): array = A collection of texts that could be present at the start of the file that always needs to be there.
                 [extensions.startComment] (optional): string = The starting comment string of the copyright text.
                 [extensions.startCommentRegex] (optional): string = The starting comment regex of the copyright text.
                 [extensions.endComment] (optional): string = The ending comment string of the copyright text.
@@ -77,6 +77,12 @@ const args = yargs
             description: 'File types that you want to copyright.',
             demandOption: false
         })
+        .option('log-mode', {
+            alias: 'l',
+            type: 'boolean',
+            description: 'Copyright errors will be logged without causing the tool to finish with an error code.',
+            demandOption: false
+        }) 
         .option('remove', {
             alias: 'r',
             type: 'boolean',
@@ -88,13 +94,21 @@ const args = yargs
             type: 'boolean',
             description: 'Run the tool in scan mode.',
             demandOption: false
+        })
+        .option('year', {
+            alias: 'y',
+            type: 'number',
+            description: `Set the year used by the tool. If not specified the tool will take any copyright text regardless 
+            of year as valid in scan mode and use the current year for the replacement text in replace mode`,
+            default: null,
+            defaultDescription: 'NULL',
+            demandOption: false
         })           
         .option('tommy', {
             type: 'boolean',
             description: 'What does this do Mr Tommy??',
             default: false,
             hidden: true,
-            
         })
         .alias('help', 'h')
         .alias('version', 'v')
@@ -102,6 +116,7 @@ const args = yargs
         .default('file-types', [], 'All extensions supported by configuration')
         .array('exclude-directories')
         .default('exclude-directories', [], 'Default configuration excluded folders')
+        .number('year')
         .boolean('remove')
         .boolean('scan')
         .boolean('tommy')
@@ -115,11 +130,11 @@ const program = new Program(filer, excludeQuestion);
 
 let config = JSON.parse(fs.readFileSync(path.join(__dirname, './copyrighter.json')).toString());
 
-if(args.config){
-    Object.assign(config, JSON.parse(fs.readFileSync(`${args.config}`).toString()));
+if(args['config']){
+    Object.assign(config, JSON.parse(fs.readFileSync(args['config']).toString()));
 }
 
-config.copyright = config.copyright.replace('{year}', new Date().getFullYear().toString());
+config.copyright = config.copyright.replace('{year}', args['year'] || new Date().getFullYear());
 
 (async ()=> {
     try{
@@ -128,15 +143,17 @@ config.copyright = config.copyright.replace('{year}', new Date().getFullYear().t
             fileTypes: args['file-types'],
             excludedFolders: args['exclude-directories'],
             config: new Config(config),
+            logMode: args['log-mode'],
             remove: args['remove'],
             scan: args['scan'],
+            year: args['year'],
             tommy: args['tommy']
         });
         
         process.exit(0);
-    }catch(ex){
-        console.error(ex);
-        process.exit(ex.code);
+    }catch(ex: any){
+        console.error(`FAILED (Code ${ex.code || 1}): ${ex.message}`);
+        process.exit(ex.code || 1);
     }
 })();
 

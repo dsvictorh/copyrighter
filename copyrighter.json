@@ -1,7 +1,7 @@
 {
     "copyright": "Copyright (c) {year} Corporation, Inc.\n\nThe right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.",
-    "regex": "Copyright \\(c\\) [0-9]+ Corporation, Inc\\.\\n\\nThe right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement\\.",
-    "defaultExcludedFolders": ["node_modules", "dist", ".git", "dist-tests"],
+    "regex": "Copyright \\(c\\) {year} Corporation, Inc\\.\\n\\nThe right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement\\.",
+    "defaultExcludedFolders": ["node_modules", "dist", ".git", "dist-tests", "bin"],
     "extensions": {
         "html": {
             "startComment": "<!--",
@@ -20,14 +20,20 @@
             "endCommentRegex": "\\*\\/"
         },
         "js": {
-            "prefixText": "#!/usr/bin/env node",
+            "prefixTexts": ["#!/usr/bin/env node"],
             "startComment": "/*",
             "startCommentRegex": "\\/\\*",
             "endComment": "*/",
             "endCommentRegex": "\\*\\/"
         },
         "ts": {
-            "prefixText": "#!/usr/bin/env node",
+            "prefixTexts": ["#!/usr/bin/env node"],
+            "startComment": "/*",
+            "startCommentRegex": "\\/\\*",
+            "endComment": "*/",
+            "endCommentRegex": "\\*\\/"
+        },
+        "jenkinsfile": {
             "startComment": "/*",
             "startCommentRegex": "\\/\\*",
             "endComment": "*/",
@@ -37,18 +43,31 @@
             "comment": "#"
         },
         "sh": {
-            "prefixText": "#!/bin/bash",
+            "prefixTexts": ["#!/bin/sh", "#!/bin/sh -e","#!/bin/bash", "#!/bin/bash -e", "#!/usr/bin/env bash"],
             "comment": "#"
         },
         "gitignore": {
             "comment": "#"
         },
         "py": {
+            "prefixTexts": ["#!/usr/bin/env python3"],
             "comment": "#"
         },
         "xml": {
             "startComment": "<!--",
             "endComment": "-->"
+        },
+        "sql": {
+            "comment": "--"
+        },
+        "tpl": {
+            "comment": "#"
+        },
+        "tf": {
+            "comment": "#"
+        },
+        "yaml": {
+            "comment": "#"
         }
     }
 }

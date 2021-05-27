@@ -1,4 +1,4 @@
-import { IConsoleQuestion } from '../interfaces/iconsole';
+import { IConsoleQuestion } from '../interfaces/iconsole-question';
 
 export class MockConsoleQuestion implements IConsoleQuestion{
     private readonly answer: boolean;

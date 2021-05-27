@@ -1,8 +1,9 @@
 import { IFiler } from './interfaces/ifiler';
-import { IConsoleQuestion } from './interfaces/iconsole';
+import { IConsoleQuestion } from './interfaces/iconsole-question';
 import { IArgs } from './interfaces/iargs';
 import { Copyrighter } from './copyrighter';
 import { File } from './models/file';
+import { CopyrightError } from './models/error';
 
 export class Program{
     private readonly filer: IFiler;
@@ -63,19 +64,26 @@ export class Program{
         }
 
         const files = await this.filer.getFiles(args.folder, args.fileTypes, args.excludedFolders, args.config.encoding);
-        const copyrighter = new Copyrighter(args.config);
+        const copyrighter = new Copyrighter(args.config, args.year);
         for(let file of files){
             const isCopyrighted = copyrighter.scan(file);
             if(isCopyrighted == null){
                 console.warn(`WARNING: File ${file.name} was ignored because no configuration for its type could be found.`);       
             }else if(!isCopyrighted){
-                console.log(`SCAN: File ${file.name} missing copyright text.`);
+                const message = args.year ? `SCAN: File ${file.name} missing copyright text with the year ${args.year}.` : `SCAN: File ${file.name} missing copyright text.`;
+                console.warn(message);
                 nonCopyrightedFiles.push(file);
             }  
         }   
         
-        if(nonCopyrightedFiles.length){
-            console.info(`FINISHED: ${nonCopyrightedFiles.length} files missing copyright text.`);
+        if(nonCopyrightedFiles.length > 0){
+            const message = args.year ? `${nonCopyrightedFiles.length} files missing copyright text with the year ${args.year}.` : `${nonCopyrightedFiles.length} files missing copyright text.`;
+
+            if(!args.logMode){
+                throw new CopyrightError(message, 1);    
+            }
+            
+            console.error(`FAILED: ${message}`);
         }else{
             console.info('FINISHED: No files missing copyright text.');
         }
@@ -85,6 +93,7 @@ export class Program{
 
     private async copyright(args: IArgs): Promise<File[]>{
         const copyrightedFiles: File[] = [];
+        const failedFiles: File[] = [];
         args.excludedFolders = args.excludedFolders.length ? args.excludedFolders : args.config.defaultExcludedFolders;
         
         //Should be a big no no to not exclude certain folders depending on the configuration like node_modules or dist folders 
@@ -104,22 +113,30 @@ export class Program{
             }
 
             const files = await this.filer.getFiles(args.folder, args.fileTypes, args.excludedFolders, args.config.encoding);
-            const copyrighter = new Copyrighter(args.config);
+            const copyrighter = new Copyrighter(args.config, args.year);
             for(let file of files){
                 if(copyrighter.copyright(file, args.remove)){
                     try{
                         this.filer.replaceFile(file, args.config.encoding);
-                        copyrightedFiles.push(file);
                         console.info(`SUCCESS: File ${file.name} ${args.remove ? 'copyright removed' : 'copyrighted'}`);
                     }catch(error: any){
-                        console.error(`ERROR: File ${file.name} failed to save changes.`);
+                        failedFiles.push(file);
+                        console.error(`ERROR: File ${file.name} failed to save changes.`);    
                     }
+
+                    copyrightedFiles.push(file);
                 }else{
                     console.warn(`WARNING: File ${file.name} was ignored because no configuration for its type could be found`);
                 }  
             }   
-            
-            if(copyrightedFiles.length){
+
+            if(failedFiles.length > 0){
+                if(!args.logMode){
+                    throw new CopyrightError(`${failedFiles.length}/${copyrightedFiles.length} files failed to be processed.`, 1);
+                }
+                
+                console.error(`FAILED: ${failedFiles.length} failed to be processed.`);
+            }else if(copyrightedFiles.length > 0){
                 console.info(`FINISHED: ${copyrightedFiles.length} files processed.`);
             }else{
                 console.info('FINISHED: No files processed.');
