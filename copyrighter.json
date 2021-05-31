@@ -4,6 +4,7 @@
     "defaultExcludedFolders": ["node_modules", "dist", ".git", "dist-tests", "bin"],
     "extensions": {
         "html": {
+            "prefixTexts": ["<!DOCTYPE html>"],
             "startComment": "<!--",
             "endComment": "-->"
         },

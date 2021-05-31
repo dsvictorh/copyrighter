@@ -2,12 +2,12 @@ import { File } from '../models/file';
 import { IFiler } from '../interfaces/ifiler';
 
 
-export const html = `<!--
+export const html = `<!DOCTYPE html>
+<!--
 Copyright (c) 2020 Corporation, Inc.
 
 The right to copy, distribute, modify, or otherwise make use of this software may be licensed only pursuant to the terms of an applicable Wind River license agreement.
 -->
-<!DOCTYPE html>
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>

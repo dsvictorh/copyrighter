@@ -3,6 +3,7 @@
     "regex": "Copyright \\(c\\) {year} Corporation, Inc\\.",
     "extensions": {
         "html": {
+            "prefixTexts": ["<!DOCTYPE html>"],
             "startComment": "<!--",
             "endComment": "-->"
         },

@@ -21,8 +21,8 @@ config.copyright = config.copyright.replace('{year}', year);
 const overrideConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../copyrighter.test.json')).toString());
 overrideConfig.copyright = overrideConfig.copyright.replace('{year}', year);
 
-const htmlConverted = `<!--\n${config.copyright}\n-->\n${html.replace(new RegExp(`<!--\\n${config.regex.replace('{year}', '[0-9]+')}\\n-->\\n`, 'gm'), '')}`;
-const htmlOverrideConverted = `<!--\n${overrideConfig.copyright}\n-->\n${html}`;
+const htmlConverted = `<!DOCTYPE html>\n<!--\n${config.copyright}\n-->\n${html.replace(`<!DOCTYPE html>\n`, '').replace(new RegExp(`<!--\\n${config.regex.replace('{year}', '[0-9]+')}\\n-->\\n`, 'gm'), '')}`;
+const htmlOverrideConverted = `<!DOCTYPE html>\n<!--\n${overrideConfig.copyright}\n-->\n${html.replace(`<!DOCTYPE html>\n`, '')}`;
 const htmlRemoved = `${html.replace(new RegExp(`<!--\\n${config.regex.replace('{year}', '[0-9]+')}\\n-->\\n`, 'gm'), '')}`;
 
 const cssConverted = `/*\n${config.copyright}\n*/\n${css}`;
@@ -59,7 +59,7 @@ describe('Test Copyrighter Works', () => {
         
         expect(error).not.toBe(undefined);
         expect(error.code).toBe(1);
-        expect(error.message).toBe('FAILED: 1/7 files failed to be processed.');
+        expect(error.message).toBe('1/7 files failed to be processed.');
     });
 
     test('Copyrights HTML, CSS, SCSS', async () => {
@@ -82,7 +82,7 @@ describe('Test Copyrighter Works', () => {
         expect(files[1].data).toEqual(dockerfileConverted);
     });
 
-    test.only('Copyrights Bash', async () => {
+    test('Copyrights Bash', async () => {
         const files = await program.run({ folder: './', fileTypes: ['sh'], excludedFolders: ['node_modules', 'dist'], year: year, config: new Config(config)});
        
         console.warn(files[1].data);
@@ -192,7 +192,7 @@ describe('Test Copyrighter Scan Works', () => {
 
         expect(error).not.toBe(undefined);
         expect(error.code).toBe(1);
-        expect(error.message).toBe(`FAILED: ${nonCopyrightedFiles} files missing copyright text.`);
+        expect(error.message).toBe(`${nonCopyrightedFiles} files missing copyright text.`);
     });
 
     test('Scans All Files With year 2019', async () => {
@@ -209,7 +209,7 @@ describe('Test Copyrighter Scan Works', () => {
         console.error(error.message, nonCopyrightedFiles);
         expect(error).not.toBe(undefined);
         expect(error.code).toBe(1);
-        expect(error.message).toBe(`FAILED: ${nonCopyrightedFiles} files missing copyright text with the year 2019.`);
+        expect(error.message).toBe(`${nonCopyrightedFiles} files missing copyright text with the year 2019.`);
     });
 
     
@@ -237,6 +237,6 @@ describe('Test Copyrighter Scan Works', () => {
 
         expect(error).not.toBe(undefined);
         expect(error.code).toBe(1);
-        expect(error.message).toBe(`FAILED: 4 files missing copyright text with the year ${year}.`);
+        expect(error.message).toBe(`4 files missing copyright text with the year ${year}.`);
     });
 });
