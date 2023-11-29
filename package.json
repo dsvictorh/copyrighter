@@ -10,8 +10,7 @@
     "start": "tsc && node dist/index.js"
   },
   "keywords": [
-    "copyright",
-    "wrstudio"
+    "copyright"
   ],
   "bin": {
     "copyrighter": "./index.js"

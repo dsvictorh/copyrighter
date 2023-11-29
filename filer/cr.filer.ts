@@ -3,7 +3,7 @@ import { File } from '../models/file';
 import * as path from 'path';
 import { IFiler } from '../interfaces/ifiler';
 
-export class WRFiler implements IFiler{
+export class CRFiler implements IFiler{
     public async getFiles(folder: string, fileTypes: string[], excludedDirectories: string[], encoding: BufferEncoding, files?: File[]): Promise<File[]>{
         files = files || [];
         for(let file of fs.readdirSync(folder, { encoding, withFileTypes: true})){

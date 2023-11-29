@@ -1,7 +1,7 @@
 import { IConsoleQuestion } from '../interfaces/iconsole-question';
 import * as readline from 'readline';
 
-export class WRConsoleQuestion implements IConsoleQuestion{
+export class CRConsoleQuestion implements IConsoleQuestion{
     private readonly answer: string;
 
     constructor(answer: string){

@@ -3,8 +3,8 @@
 import yargs from 'yargs';
 import * as fs from 'fs';
 import * as path from 'path';
-import { WRConsoleQuestion } from './console-question/wr.console-question';
-import { WRFiler } from './filer/wr.filer';
+import { CRConsoleQuestion } from './console-question/cr.console-question';
+import { CRFiler } from './filer/cr.filer';
 import { IConsoleQuestion } from 'interfaces/iconsole-question';
 import { IFiler } from './interfaces/ifiler';
 import { Program } from './program';
@@ -123,8 +123,8 @@ const args = yargs
         .wrap(150)
         .argv;
 
-const filer: IFiler = new WRFiler();
-const excludeQuestion: IConsoleQuestion = new WRConsoleQuestion(args['answer']);
+const filer: IFiler = new CRFiler();
+const excludeQuestion: IConsoleQuestion = new CRConsoleQuestion(args['answer']);
 
 const program = new Program(filer, excludeQuestion);
 
